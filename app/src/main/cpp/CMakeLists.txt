@@ -106,6 +106,8 @@ add_library( # Sets the name of the library.
 
         # Provides a relative path to your source file(s).
         native-lib.cpp
+        # 工具
+        ${CMAKE_SOURCE_DIR}/utils/logger.h
         )
 
 # 指定编译目标库时，cmake要链接的库
@@ -122,7 +124,6 @@ target_link_libraries(
         swscale
         avformat
         avdevice
-
         # Links the target library to the log library
         # included in the NDK.
         ${log-lib} )
