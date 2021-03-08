@@ -5,6 +5,8 @@
 #ifndef ANDROIDFFMPEG_I_DECODER_H
 #define ANDROIDFFMPEG_I_DECODER_H
 
+#include "../media/i_decode_state_cb.h"
+
 class IDecoder {
 public:
     virtual void goOn() = 0;
@@ -18,6 +20,7 @@ public:
     virtual long getDuration() = 0;
 
     virtual long getCurPos() = 0;
+    virtual void setStateReceiver(IDecoderStateCb *cb)=0;
 
 };
 

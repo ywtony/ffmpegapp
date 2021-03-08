@@ -2,7 +2,11 @@
 #include <string>
 #include <stdio.h>
 #include <iostream>
-
+#include "utils/logger.h"
+#include "media/base_decoder.h"
+#include "media/const.h"
+#include "media/one_frame.h"
+#include "utils/timer.c"
 extern "C" {
 #include "libavformat/avformat.h"
 }

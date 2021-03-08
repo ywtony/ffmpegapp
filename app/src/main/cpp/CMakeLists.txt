@@ -105,9 +105,16 @@ add_library( # Sets the name of the library.
         SHARED
 
         # Provides a relative path to your source file(s).
-        native-lib.cpp
+        ${CMAKE_SOURCE_DIR}/native-lib.cpp
         # 工具
         ${CMAKE_SOURCE_DIR}/utils/logger.h
+        ${CMAKE_SOURCE_DIR}/utils/timer.c
+        ${CMAKE_SOURCE_DIR}/media/base_decoder.h
+        #编解码
+        ${CMAKE_SOURCE_DIR}/media/i_decode_state_cb.cpp
+        ${CMAKE_SOURCE_DIR}/media/base_decoder.cpp
+
+
         )
 
 # 指定编译目标库时，cmake要链接的库
