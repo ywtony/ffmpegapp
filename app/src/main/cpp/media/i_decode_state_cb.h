@@ -23,19 +23,19 @@ public:
      * 解码器已准备好
      * @param decoder
      */
-    virtual void decoderReady(IDecoder *decoder);
+    virtual void decoderReady(IDecoder *decoder) = 0;
 
     /**
      * 开始解码
      * @param decoder
      */
-    virtual void decoderRunning(IDecoder *decoder);
+    virtual void decoderRunning(IDecoder *decoder) = 0;
 
     /**
      * 暂停解码
      * @param decoder
      */
-    virtual void decoderPause(IDecoder *decoder);
+    virtual void decoderPause(IDecoder *decoder) = 0;
 
     /**
      * 解码一帧数据
@@ -43,18 +43,18 @@ public:
      * @param oneFrame
      * @return
      */
-    virtual bool decoderOneFrame(IDecoder *decoder, OneFrame *oneFrame);
+    virtual bool decoderOneFrame(IDecoder *decoder, OneFrame *oneFrame) = 0;
 
     /*
      * 解码结束
      */
-    virtual void decoderFinish(IDecoder *decoder);
+    virtual void decoderFinish(IDecoder *decoder) = 0;
 
     /**
      * 停止解码
      * @param decoder
      */
-    virtual void decoderStop(IDecoder *decoder);
+    virtual void decoderStop(IDecoder *decoder) = 0;
 };
 
 #endif //ANDROIDFFMPEG_I_DECODE_STATE_CB_H

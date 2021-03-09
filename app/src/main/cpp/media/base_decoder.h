@@ -58,6 +58,7 @@ private:
     const char *m_path = NULL;
     //线程等待锁变量
     pthread_mutex_t m_mutex = PTHREAD_MUTEX_INITIALIZER;
+    //条件
     pthread_cond_t m_cond = PTHREAD_COND_INITIALIZER;
     //为合成器提供解码
     bool m_for_synthesizer = false;
