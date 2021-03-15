@@ -15,6 +15,7 @@ import android.view.Surface;
  * @Version: 1.0
  */
 public class MySimpleMediaPlayer {
+    public native int play(String path,Surface surface);
     /**
      * 初始化视频播放器
      * 主要是初始化ffmpeg相关的东西
@@ -37,7 +38,7 @@ public class MySimpleMediaPlayer {
      *
      * @param player
      */
-    public native void play(int player);
+//    public native void play(int player);
 
     /**
      * 暂停播放
@@ -52,4 +53,9 @@ public class MySimpleMediaPlayer {
      * @param player
      */
     public native void destroy(int player);
+
+    static {
+        System.loadLibrary("native-lib");
+    }
+
 }

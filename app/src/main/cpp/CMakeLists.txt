@@ -113,7 +113,14 @@ add_library( # Sets the name of the library.
         #编解码
         ${CMAKE_SOURCE_DIR}/media/i_decode_state_cb.cpp
         ${CMAKE_SOURCE_DIR}/media/base_decoder.cpp
-
+        #视频播放器
+        ${CMAKE_SOURCE_DIR}/media/video/v_decoder.h
+        ${CMAKE_SOURCE_DIR}/media/video/v_decoder.cpp
+        ${CMAKE_SOURCE_DIR}/render/video/native_render.cpp
+        ${CMAKE_SOURCE_DIR}/render/video/native_render.h
+        ${CMAKE_SOURCE_DIR}/render/video/video_render.h
+        ${CMAKE_SOURCE_DIR}/play/player.h
+        ${CMAKE_SOURCE_DIR}/play/player.cpp
 
         )
 
@@ -131,6 +138,9 @@ target_link_libraries(
         swscale
         avformat
         avdevice
+
+
+        -landroid
         # Links the target library to the log library
         # included in the NDK.
         ${log-lib} )
