@@ -3,4 +3,13 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
+    <color name="t999">#999999</color>
+    <color name="t666">#666666</color>
+    <color name="t333">#333333</color>
+    <color name="white">#ffffff</color>
+    <color name="transparent">@android:color/transparent</color>
+    <color name="color_FFEA5B">#FFEA5B</color>
+    <color name="color_FF7201">#FF7201</color>
+    <color name="color_FFF35F">#FFF35F</color>
+    <color name="tran_50_8c">#000000</color>
 </resources>

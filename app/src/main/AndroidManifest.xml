@@ -14,13 +14,27 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CJVMActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".CJVMActivity" android:screenOrientation="portrait"/>
+        <activity
+            android:name=".FFmpegSimpleActivity" android:screenOrientation="portrait"/>
+        <activity
+            android:name=".MediaCodecActivity" android:screenOrientation="portrait"/>
+        <activity
+            android:name=".GenerateMp4Activity" android:screenOrientation="portrait"/>
+        <activity
+            android:name=".OpenGlEsPlayerActivity" android:screenOrientation="portrait"/>
+        <activity
+            android:name=".OpenGlesDrawBitmapActivity" android:screenOrientation="portrait"/>
+        <activity
+            android:name=".OpenGlesDrawTriangleActivity" android:screenOrientation="portrait"/>
 
     </application>
 

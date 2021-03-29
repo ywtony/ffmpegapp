@@ -1,5 +1,7 @@
 package com.yw.ffmpeg.harddecoding;
 
+import android.media.MediaFormat;
+
 /**
  * @ProjectName: AndroidFFMpeg
  * @Package: com.yw.ffmpeg.harddecoding
@@ -73,4 +75,48 @@ public interface IDecoder extends Runnable {
      * @param decodeStateListener 解码状态回调接口
      */
     void setDecodeStateListener(IDecoderStateListener decodeStateListener);
+    /**
+     * 获取视频宽
+     */
+    int getWidth();
+
+    /**
+     * 获取视频高
+     */
+    int getHeight();
+
+    /**
+     * 获取视频长度
+     */
+    long getDuration();
+
+    /**
+     * 当前帧时间，单位：ms
+     */
+    long getCurTimeStamp();
+
+    /**
+     * 获取视频旋转角度
+     */
+    int getRotationAngle();
+
+    /**
+     * 获取音视频对应的格式参数
+     */
+    MediaFormat getMediaFormat();
+
+    /**
+     * 获取音视频对应的媒体轨道
+     */
+    int getTrack();
+
+    /**
+     * 获取解码的文件路径
+     */
+    String getFilePath();
+
+    /**
+     * 无需音视频同步
+     */
+    IDecoder withoutSync();
 }
