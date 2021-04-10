@@ -108,6 +108,12 @@ public class BitmapDrawer implements IDrawer {
     public void setWorldSize(int worldW, int worldH) {
 
     }
+
+    @Override
+    public void setVideoSize(int videoW, int videoH) {
+
+    }
+
     private void createGLPrg() {
         if (mProgram == -1) {
             int vertexShader = loadShader(GLES20.GL_VERTEX_SHADER, getVertexShader());
@@ -189,7 +195,6 @@ public class BitmapDrawer implements IDrawer {
         //将资源加入到着色器中，并编译
         GLES20.glShaderSource(shader, shaderCode);
         GLES20.glCompileShader(shader);
-
         return shader;
     }
 }

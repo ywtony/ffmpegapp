@@ -107,6 +107,11 @@ public class TriangleDrawer implements IDrawer {
 
     }
 
+    @Override
+    public void setVideoSize(int videoW, int videoH) {
+
+    }
+
     private void createGLProgram() {
         if (mProgram == -1) {
 

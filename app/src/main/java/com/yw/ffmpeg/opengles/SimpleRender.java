@@ -15,7 +15,7 @@ import javax.microedition.khronos.opengles.GL10;
  * @ProjectName: AndroidFFMpeg
  * @Package: com.yw.ffmpeg.opengles
  * @ClassName: SimpleRender
- * @Description: java类作用描述
+ * @Description: 简单渲染器
  * @Author: wei.yang
  * @CreateDate: 2021/3/23 10:59
  * @UpdateUser: 更新者：wei.yang
@@ -33,8 +33,10 @@ public class SimpleRender implements GLSurfaceView.Renderer {
     @SuppressLint("LongLogTag")
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-        //清屏
+        //设置清屏颜色
         GLES20.glClearColor(0f, 0f, 0f, 0f);
+        //把窗口清除为当前颜色
+        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
         //开启混合，即半透明
         GLES20.glEnable(GLES20.GL_BLEND);
         GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
@@ -59,6 +61,10 @@ public class SimpleRender implements GLSurfaceView.Renderer {
 
     @Override
     public void onDrawFrame(GL10 gl) {
+        /*
+        GLES20.GL_COLOR_BUFFER_BIT把窗口清除为当前颜色
+        GLES20.GL_DEPTH_BUFFER_BIT) 清除深度缓冲区
+         */
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
         //此接口会不停的执行回调从而实现绘制
         for (IDrawer iDrawer : drawers) {

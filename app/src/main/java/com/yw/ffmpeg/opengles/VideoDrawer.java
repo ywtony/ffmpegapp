@@ -3,6 +3,7 @@ package com.yw.ffmpeg.opengles;
 import android.graphics.SurfaceTexture;
 import android.opengl.GLES11Ext;
 import android.opengl.GLES20;
+import android.opengl.Matrix;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -21,9 +22,10 @@ import java.nio.FloatBuffer;
  * @Version: 1.0
  */
 public class VideoDrawer implements IDrawer {
-    public VideoDrawer(){
+    public VideoDrawer() {
         initPos();
     }
+
     // 顶点坐标
     private float[] mVertexCoors = new float[]{
             -1f, -1f,
@@ -40,19 +42,23 @@ public class VideoDrawer implements IDrawer {
             1f, 0f
     };
     private SurfaceTexture mSurfaceTexture = null;
-    private int mTextureId =-1;
+    private int mTextureId = -1;
 
     //OpenGL程序ID
-    private int mProgram =-1;
+    private int mProgram = -1;
     // 顶点坐标接收者
-    private int mVertexPosHandler =-1;
+    private int mVertexPosHandler = -1;
     // 纹理坐标接收者
-    private int mTexturePosHandler =-1;
+    private int mTexturePosHandler = -1;
     // 纹理接收者
-    private int mTextureHandler =-1;
-
+    private int mTextureHandler = -1;
+    //顶点缓冲区和纹理缓冲区
     private FloatBuffer mVertexBuffer;
     private FloatBuffer mTextureBuffer;
+
+    //
+    private float mWidthRatio = 1f;
+    private float mHeightRatio = 1f;
 
     private void initPos() {
         ByteBuffer bb = ByteBuffer.allocateDirect(mVertexCoors.length * 4);
@@ -79,6 +85,8 @@ public class VideoDrawer implements IDrawer {
     @Override
     public void draw() {
         if (mTextureId != -1) {
+            // //【新增1: 初始化矩阵方法】
+            initDefMatrix();
             //【步骤2: 创建、编译并启动OpenGL着色器】
             createGLPrg();
             //【步骤3: 激活并绑定纹理单元】
@@ -153,7 +161,14 @@ public class VideoDrawer implements IDrawer {
 
     @Override
     public void setWorldSize(int worldW, int worldH) {
+        mWorldWidth = worldW;
+        mWorldHeight = worldH;
+    }
 
+    @Override
+    public void setVideoSize(int videoW, int videoH) {
+        this.mVideoWidth = videoW;
+        this.mVideoHeight = videoH;
     }
 
     @Override
@@ -171,18 +186,33 @@ public class VideoDrawer implements IDrawer {
                 "    vCoordinate = aCoordinate;" +
                 "}";
     }
-
+    //黑白滤镜
+//    private String getFragmentShader() {
+//        //一定要加换行"\n"，否则会和下一行的precision混在一起，导致编译出错
+//        return "#extension GL_OES_EGL_image_external : require\n" +
+//                "precision mediump float;" +
+//                "varying vec2 vCoordinate;" +
+//                "uniform samplerExternalOES uTexture;" +
+//                "void main() {" +
+//                "vec4 color = texture2D(uTexture,vCoordinate);"+
+//                "float gray=(color.r+color.g+color.b)/3.0;"+
+//                "gl_FragColor=vec4(gray,gray,gray,1.0);"+
+////                "  gl_FragColor=texture2D(uTexture, vCoordinate);" +
+//                "}";
+//    }
+    //片元着色器
     private String getFragmentShader() {
         //一定要加换行"\n"，否则会和下一行的precision混在一起，导致编译出错
         return "#extension GL_OES_EGL_image_external : require\n" +
                 "precision mediump float;" +
                 "varying vec2 vCoordinate;" +
+                "varying float inAlpha;" +
                 "uniform samplerExternalOES uTexture;" +
                 "void main() {" +
-                "  gl_FragColor=texture2D(uTexture, vCoordinate);" +
+                "  vec4 color = texture2D(uTexture, vCoordinate);" +
+                "  gl_FragColor = vec4(color.r, color.g, color.b, inAlpha);" +
                 "}";
     }
-
     private int loadShader(int type, String shaderCode) {
         //根据type创建顶点着色器或者片元着色器
         int shader = GLES20.glCreateShader(type);
@@ -190,5 +220,76 @@ public class VideoDrawer implements IDrawer {
         GLES20.glShaderSource(shader, shaderCode);
         GLES20.glCompileShader(shader);
         return shader;
+    }
+
+    //坐标变换矩阵
+    private float[] mMatrix = null;
+    //矩阵变换接收者
+    private int mVertexMatrixHandler = -1;
+    //视频的原始宽高
+    private int mVideoWidth = -1;
+    private int mVideoHeight = -1;
+    //屏幕宽高
+    private int mWorldWidth = -1;
+    private int mWorldHeight = -1;
+
+    //初始化矩阵方法
+    private void initDefMatrix() {
+        if (mMatrix != null) return;
+        if (mVideoWidth != -1 && mVideoHeight != -1 &&
+                mWorldWidth != -1 && mWorldHeight != -1) {
+            mMatrix = new float[16];
+            float[] prjMatrix = new float[16];
+            float originRatio = mVideoWidth / (float)mVideoHeight;
+            float worldRatio = mWorldWidth / (float)mWorldHeight;
+            if (mWorldWidth > mWorldHeight) {
+                if (originRatio > worldRatio) {
+                    mHeightRatio = originRatio / worldRatio;
+                    Matrix.orthoM(
+                            prjMatrix, 0,
+                            -mWidthRatio, mWidthRatio,
+                            -mHeightRatio, mHeightRatio,
+                            3f, 5f
+                    );
+                } else {// 原始比例小于窗口比例，缩放高度度会导致高度超出，因此，高度以窗口为准，缩放宽度
+                    mWidthRatio = worldRatio / originRatio;
+                    Matrix.orthoM(
+                            prjMatrix, 0,
+                            -mWidthRatio, mWidthRatio,
+                            -mHeightRatio, mHeightRatio,
+                            3f, 5f
+                    );
+                }
+            } else {
+                if (originRatio > worldRatio) {
+                    mHeightRatio = originRatio / worldRatio;
+                    Matrix.orthoM(
+                            prjMatrix, 0,
+                            -mWidthRatio, mWidthRatio,
+                            -mHeightRatio, mHeightRatio,
+                            3f, 5f
+                    );
+                } else {// 原始比例小于窗口比例，缩放高度会导致高度超出，因此，高度以窗口为准，缩放宽度
+                    mWidthRatio = worldRatio / originRatio;
+                    Matrix.orthoM(
+                            prjMatrix, 0,
+                            -mWidthRatio, mWidthRatio,
+                            -mHeightRatio, mHeightRatio,
+                            3f, 5f
+                    );
+                }
+            }
+
+            //设置相机位置
+            float[] viewMatrix = new float[16];
+            Matrix.setLookAtM(
+                    viewMatrix, 0,
+                    0f, 0f, 5.0f,
+                    0f, 0f, 0f,
+                    0f, 1.0f, 0f
+            );
+            //计算变换矩阵
+            Matrix.multiplyMM(mMatrix, 0, prjMatrix, 0, viewMatrix, 0);
+        }
     }
 }

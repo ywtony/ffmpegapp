@@ -5,6 +5,7 @@ import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Surface;
+import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.Nullable;
@@ -46,6 +47,7 @@ public class OpenGlEsPlayerActivity extends BaseActivity {
             choiceVideo();
         });
         videoDrawer = new VideoDrawer();
+        videoDrawer.setVideoSize(1080,1920);
         initRender(videoDrawer);
 //        initRender(new BitmapDrawer(BitmapFactory.decodeResource(getResources(), R.drawable.girl)));
     }
@@ -80,5 +82,19 @@ public class OpenGlEsPlayerActivity extends BaseActivity {
         //开启播放
         videoDecoder.goOn();
         audioDecoder.goOn();
+    }
+
+    private void test(){
+        glSurfaceView.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+            @Override
+            public void onViewAttachedToWindow(View v) {
+
+            }
+
+            @Override
+            public void onViewDetachedFromWindow(View v) {
+
+            }
+        });
     }
 }

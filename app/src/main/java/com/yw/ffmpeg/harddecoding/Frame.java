@@ -19,7 +19,7 @@ import java.nio.ByteBuffer;
  */
 public class Frame {
     public ByteBuffer buffer=null;
-    private MediaCodec.BufferInfo bufferInfo = new MediaCodec.BufferInfo();
+    public MediaCodec.BufferInfo bufferInfo = new MediaCodec.BufferInfo();
     public void setBufferInfo(MediaCodec.BufferInfo bufferInfo){
         this.bufferInfo.set(bufferInfo.offset,bufferInfo.size,bufferInfo.presentationTimeUs,bufferInfo.flags);
     }

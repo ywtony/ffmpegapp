@@ -54,6 +54,9 @@ public class MainActivity extends FragmentActivity {
         list.add(new ClassBean("绘制一个三角形", OpenGlesDrawTriangleActivity.class.getName()));
         list.add(new ClassBean("绘制一个图片", OpenGlesDrawBitmapActivity.class.getName()));
         list.add(new ClassBean("opengles播放器", OpenGlEsPlayerActivity.class.getName()));
+        list.add(new ClassBean("使用opengles渲染一个简单的三角形", SimpleTriangleActivity.class.getName()));
+        list.add(new ClassBean("EGL小案例", EGLSimpleActivity.class.getName()));
+
 
         MainAdapter adapter = new MainAdapter(this, list, R.layout.item_main, new BaseListAdapter.OnListItemClickListener<ClassBean>() {
 

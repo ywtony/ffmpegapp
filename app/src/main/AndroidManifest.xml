@@ -35,7 +35,10 @@
             android:name=".OpenGlesDrawBitmapActivity" android:screenOrientation="portrait"/>
         <activity
             android:name=".OpenGlesDrawTriangleActivity" android:screenOrientation="portrait"/>
-
+        <activity
+            android:name=".SimpleTriangleActivity" android:screenOrientation="portrait"
+            android:label="使用opengles渲染一个简单的三角形"/>
+        <activity android:name=".EGLSimpleActivity" android:label="EGl小案例"/>
     </application>
 
 </manifest>

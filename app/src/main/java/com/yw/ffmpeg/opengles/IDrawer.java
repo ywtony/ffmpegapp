@@ -31,6 +31,13 @@ public interface IDrawer {
      */
     void release();
     void setWorldSize(int worldW ,int worldH);
+
+    /**
+     * 设置视频的原始宽高
+     * @param videoW 宽
+     * @param videoH 高
+     */
+    void  setVideoSize(int videoW,int videoH);
     default  SurfaceTexture getSurfaceTexture(){
         return null;
     };
