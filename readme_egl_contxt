@@ -1,2 +1,51 @@
 //EGL上下文环境创建---》EGL承担了为OpenGl提供上下文环境及窗口管理的职责
 EGL是双缓冲工作模式，即有一个Back FrameBuffer 和一个Front FrameBuffer 正常绘制操作的目标是Back FrameBuffer，操作完毕之后调用eglSwapBuffer这个api，将绘制完毕的FrameBuffer交换到Front Buffer中并显示出来
+
+EGLDisplay:是一个封装系统物理屏幕的数据类型
+
+
+//创建EGLDisplay
+eglGetDisplay(EGL_DEFAULT_DISPLAY)
+
+//初始化显示设备
+eglInitialize(diplay,0,0)
+
+//配置，android平台下的配置如下所示
+const EGLint attribs[]  = {
+    EGL_BUFFER_SIZE,32,
+    EGL_ALPHA_SIZE,8,
+    EGL_BLUE_SIZE,8,
+    EGL_GREEN_SIZE,8,
+    EGL_RED_SIZE,8,
+    EGL_RENDERABLE_TYPE,EGL_OPENGL_ES2_BIT,
+    EGL_SURFACE_TYPE,EGL_WINDOW_BIT,
+    EGL_NONE
+}
+
+eglChooseConfig(display,attribs,&config,1,&numConfigs)
+
+
+//创建EGLContext
+EGLint attributes[] ={EGL_CONTEXT_VERSION,2,EGL_NONE}
+if(!(context=eglCreateContext(display,config,NULL,eglContextAttributes)))
+
+//创建EGLSurface
+EGLSurface surface = NULL;
+EGLint format;
+if(!eglGetConfigAttrib(display,config,EGL_NATIVE_VISUAL_ID,&format))
+
+//_window本地设备屏幕表示
+ANativeWindow_setBuffersGeometry(_window,0,0,format)
+
+glCreateWindowSurface(display,config,_window,0)
+
+//为当前线程绑定Surface和Context
+eglMakeCurrent(display,eglSurface,eglSurface,context)
+
+//销毁显示设备
+eglDestroySurface(display,eglSurface)
+//销毁上细纹
+eglDestroyContext(display,context)
+
+
+

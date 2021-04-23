@@ -139,8 +139,9 @@ target_link_libraries(
         avformat
         avdevice
 
-
+        -lEGL
         -landroid
+        -lGLESv2
         # Links the target library to the log library
         # included in the NDK.
         ${log-lib} )
