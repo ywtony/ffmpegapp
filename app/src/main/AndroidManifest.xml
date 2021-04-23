@@ -2,17 +2,28 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.yw.ffmpeg">
+    <!--    文件夹读写权限-->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!--    相机权限-->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.permission.camera" />
+    <!--    摄像头硬件相关及自动对焦-->
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-permission
+        android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
         tools:ignore="ProtectedPermissions" />
+
     <application
         android:allowBackup="true"
-        android:requestLegacyExternalStorage="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -22,23 +33,43 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CJVMActivity" android:screenOrientation="portrait"/>
+            android:name=".CJVMActivity"
+            android:screenOrientation="portrait" />
         <activity
-            android:name=".FFmpegSimpleActivity" android:screenOrientation="portrait"/>
+            android:name=".FFmpegSimpleActivity"
+            android:screenOrientation="portrait" />
         <activity
-            android:name=".MediaCodecActivity" android:screenOrientation="portrait"/>
+            android:name=".MediaCodecActivity"
+            android:screenOrientation="portrait" />
         <activity
-            android:name=".GenerateMp4Activity" android:screenOrientation="portrait"/>
+            android:name=".GenerateMp4Activity"
+            android:screenOrientation="portrait" />
         <activity
-            android:name=".OpenGlEsPlayerActivity" android:screenOrientation="portrait"/>
+            android:name=".OpenGlEsPlayerActivity"
+            android:screenOrientation="portrait" />
         <activity
-            android:name=".OpenGlesDrawBitmapActivity" android:screenOrientation="portrait"/>
+            android:name=".OpenGlesDrawBitmapActivity"
+            android:screenOrientation="portrait" />
         <activity
-            android:name=".OpenGlesDrawTriangleActivity" android:screenOrientation="portrait"/>
+            android:name=".OpenGlesDrawTriangleActivity"
+            android:screenOrientation="portrait" />
         <activity
-            android:name=".SimpleTriangleActivity" android:screenOrientation="portrait"
-            android:label="使用opengles渲染一个简单的三角形"/>
-        <activity android:name=".EGLSimpleActivity" android:label="EGl小案例"/>
+            android:name=".SimpleTriangleActivity"
+            android:label="使用opengles渲染一个简单的三角形"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".EGLSimpleActivity"
+            android:label="EGl小案例" />
+        <activity
+            android:name="camera.SurfaceViewCamera2PreviewActivity"
+            android:label="SurfaceView摄像头预览" />
+        <activity
+            android:name="camera.TextureViewCamera2PreviewActivity"
+            android:label="TextureView摄像头预览" />
+        <activity android:name="camera.SurfaceCameraMp4Activity"
+            android:label="Camera相机拍照并预览编码保存"/>
+        <activity android:name="camera.ImageActivity"
+            android:label="预览拍照后的图片"/>
     </application>
 
 </manifest>

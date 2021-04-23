@@ -1,5 +1,6 @@
 package com.yw.ffmpeg.egl;
 
+import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -25,7 +26,7 @@ import java.util.List;
  * @Version: 1.0
  */
 public class CustomerGLRender implements SurfaceHolder.Callback {
-
+    private Surface surface;
     //OpenGL渲染线程
     private RenderThread mThread = new RenderThread();
 
@@ -34,7 +35,6 @@ public class CustomerGLRender implements SurfaceHolder.Callback {
 
     //所有的绘制器
     private List<IDrawer> mDrawers = new ArrayList<IDrawer>();
-
     public CustomerGLRender(SurfaceView surfaceView) {
         setSurface(surfaceView);
         //启动渲染线程
@@ -82,5 +82,22 @@ public class CustomerGLRender implements SurfaceHolder.Callback {
     @Override
     public void surfaceDestroyed(@NonNull SurfaceHolder holder) {
         mThread.onSurfaceDestroy();
+    }
+
+    //设置Surface接口
+    public void setSurface(Surface surface,int width,int height){
+        this.surface = surface;
+        mThread.onSufaceCreate();
+        mThread.onSurfaceChange(width,height);
+
+    }
+
+    //设置渲染模式
+    public void setRenderMode(RenderMode mode){
+//        mThread.set
+    }
+    //通知更新画面方法
+    public void notifySwap(long timeUs){
+//        mThread.
     }
 }

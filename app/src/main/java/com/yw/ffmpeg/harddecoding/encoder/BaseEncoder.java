@@ -42,6 +42,10 @@ public abstract class BaseEncoder implements Runnable {
         this.height = height;
         initCodec();
     }
+    public BaseEncoder(MMuxer mMuxer) {
+        this.mMuxer = mMuxer;
+        initCodec();
+    }
 
     private static final String TAG = "BaseEncoder";
     //Mp4合成器

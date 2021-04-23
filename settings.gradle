@@ -1,2 +1,4 @@
+include ':cameralib'
 include ':app'
+include ':cameralib'
 rootProject.name = "AndroidFFMpeg"

@@ -1,0 +1,35 @@
+创建一个显卡可执行程序的具体步骤：
+1.glCreateProgram(创建显卡程序)
+2.glAttachShader（加入顶点着色器）--------------------------------------------->glCreateShader（创建顶点着色器）->glShaderSource（设置着色器代码）->glCompileShader（编译着色器代码）
+3.glAttachShader--------------------------------------------->glCreateShader->glShaderSource->glCompileShader
+4.glLinkProgram（链接着色器）
+5.glUseProgram（使用着色器）
+
+
+//创建着色器
+GLuint glCreateShader(GLenum shaderType)
+shaderType:着色器类型有一下两种
+1.顶点着色器：GL_VERTEX_SHADER
+2.片元着色器：GL_FRAGMENT_SHADER
+
+
+//设置着色器源代码----->把着色器程序加载到着色器句柄所关联的内存中
+void glShaderSource(GLuint shader,int numOfStrings,const char**strings,int *lenOfStrings)
+
+//编译着色器代码
+void glCompileShader(GLuint shader)
+
+//验证着色器程序是否编译成功
+void glGetShaderiv(GLuint shader,GLenum pname,GLint *params)
+share:句柄
+pname：shader状态，这里一般是验证编译是否成功，该状态一般选取GL_COMPILE_STATUS，
+params：返回值当返回1时说明shader是编译成功，如果是0则说明shader没有编译成功
+
+
+//输入编译着色器程序的异常信息
+void glGetShaderInfoLog(GLuint object,int maxLen,int *len,char *log)
+
+//检查链接程序是否成功
+glGetProgramiv(GLuint program,GLenum pname,GLuint *params)
+
+

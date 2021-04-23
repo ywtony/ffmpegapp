@@ -1,29 +1,10 @@
 package com.yw.ffmpeg;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
-import android.Manifest;
-import android.app.Activity;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.PixelFormat;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.util.Log;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.yw.ffmpeg.adapter.BaseListAdapter;
 import com.yw.ffmpeg.adapter.MainAdapter;
@@ -32,6 +13,10 @@ import com.yw.ffmpeg.utils.ActivityUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import camera.SurfaceCameraMp4Activity;
+import camera.SurfaceViewCamera2PreviewActivity;
+import camera.TextureViewCamera2PreviewActivity;
 
 public class MainActivity extends FragmentActivity {
     private ListView listView;
@@ -56,7 +41,9 @@ public class MainActivity extends FragmentActivity {
         list.add(new ClassBean("opengles播放器", OpenGlEsPlayerActivity.class.getName()));
         list.add(new ClassBean("使用opengles渲染一个简单的三角形", SimpleTriangleActivity.class.getName()));
         list.add(new ClassBean("EGL小案例", EGLSimpleActivity.class.getName()));
-
+        list.add(new ClassBean("SurfaceView摄像头预览", SurfaceViewCamera2PreviewActivity.class.getName()));
+        list.add(new ClassBean("TextureView摄像头预览", TextureViewCamera2PreviewActivity.class.getName()));
+        list.add(new ClassBean("Camera相机拍照并预览编码保存", SurfaceCameraMp4Activity.class.getName()));
 
         MainAdapter adapter = new MainAdapter(this, list, R.layout.item_main, new BaseListAdapter.OnListItemClickListener<ClassBean>() {
 

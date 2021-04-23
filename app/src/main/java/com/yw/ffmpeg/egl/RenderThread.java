@@ -31,11 +31,12 @@ import static com.yw.ffmpeg.egl.RenderState.SURFACE_DESTROY;
 public class RenderThread extends Thread {
     private Surface surface;
     private List<IDrawer> drawers = new ArrayList<>();
+
     public void setSurface(Surface surface) {
         this.surface = surface;
     }
 
-    public void setDrawers(List<IDrawer> drawers){
+    public void setDrawers(List<IDrawer> drawers) {
         this.drawers = drawers;
     }
 
@@ -52,7 +53,12 @@ public class RenderThread extends Thread {
     private int mHeight = 0;
     //定义一个线程锁
     private Object mWaitLock = new Object();
-
+    //默认渲染模式,通知时渲染
+    private RenderMode renderMode = RenderMode.RENDER_WHEN_DIRTY;
+    //当前时间戳
+    private Long mCurTimestamp = 0L;
+    //
+    private Long mLastTimestamp = 0L;
     private void holdOn() {
         synchronized (mWaitLock) {
             try {
@@ -114,6 +120,10 @@ public class RenderThread extends Thread {
                 case RENDERING: {
                     //【4】进入循环渲染
                     render();
+                    //如果是 `RENDER_WHEN_DIRTY` 模式，渲染后，把线程挂起，等待下一帧
+                    if (renderMode == RenderMode.RENDER_WHEN_DIRTY) {
+                        holdOn();
+                    }
                 }
                 break;
                 case SURFACE_DESTROY: {
@@ -132,7 +142,10 @@ public class RenderThread extends Thread {
                 }
             }
             try {
-                Thread.sleep(20);
+                //如果是循环渲染，则每16毫秒渲染一次
+                if (renderMode == RenderMode.RENDER_CONTINUOUSLY) {
+                    sleep(16);
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -176,10 +189,10 @@ public class RenderThread extends Thread {
      * @author: wei.yang
      */
     private void generateTextureID() {
-        int[] textureIds = OpenGlTools.getInstance().createTextureIds(drawers.size());
-        for ((idx, drawer) in mDrawers.withIndex()){
-            drawer.setTextureID(textureIds[idx])
-        }
+//        int[] textureIds = OpenGlTools.getInstance().createTextureIds(drawers.size());
+//        for ((idx, drawer) in mDrawers.withIndex()){
+//            drawer.setTextureID(textureIds[idx])
+//        }
     }
 
     /**
@@ -188,9 +201,9 @@ public class RenderThread extends Thread {
      * @author: wei.yang
      */
     private void configWordSize() {
-        mDrawers.forEach {
-            it.setWorldSize(mWidth, mHeight)
-        }
+//        mDrawers.forEach {
+//            it.setWorldSize(mWidth, mHeight)
+//        }
     }
 
     /**
@@ -199,10 +212,35 @@ public class RenderThread extends Thread {
      * @author: wei.yang
      */
     private void render() {
-        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
-        mDrawers.forEach {
-            it.draw()
-        }
-        eglSurfaceHolder.swapBuffers();
+//        boolean render = false;
+//        if(renderMode==RenderMode.RENDER_CONTINUOUSLY){
+//            render = true;
+//        }else{
+//            synchronized (mCurTimestamp){
+//                if(mCurTimestamp>mLastTimestamp){
+//                    render = true;
+//                }else{
+//                    render  = false;
+//                }
+//            }
+//        }
+//        if(render){
+//            GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
+//            mDrawers.forEach {
+//                it.draw()
+//            }
+//            eglSurfaceHolder.set
+//            eglSurfaceHolder.swapBuffers();
+//        }
+
+    }
+
+    /**
+     * 设置渲染模式
+     *
+     * @param mode
+     */
+    public void setRenderMode(RenderMode mode) {
+        this.renderMode = mode;
     }
 }

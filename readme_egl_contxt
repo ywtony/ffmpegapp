@@ -1,0 +1,2 @@
+//EGL上下文环境创建---》EGL承担了为OpenGl提供上下文环境及窗口管理的职责
+EGL是双缓冲工作模式，即有一个Back FrameBuffer 和一个Front FrameBuffer 正常绘制操作的目标是Back FrameBuffer，操作完毕之后调用eglSwapBuffer这个api，将绘制完毕的FrameBuffer交换到Front Buffer中并显示出来

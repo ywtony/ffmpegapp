@@ -62,6 +62,7 @@ public class BitmapDrawer implements IDrawer {
         initPos();
     }
     private void initPos() {
+        //分配堆外内存
         ByteBuffer bb = ByteBuffer.allocateDirect(mVertexCoors.length * 4);
         bb.order(ByteOrder.nativeOrder());
         //将坐标数据转换为FloatBuffer，用以传入给OpenGL ES程序
@@ -97,10 +98,15 @@ public class BitmapDrawer implements IDrawer {
 
     @Override
     public void release() {
+        //禁用顶点位置变量
         GLES20.glDisableVertexAttribArray(mVertexPosHandler);
+        //禁用纹理位置变量
         GLES20.glDisableVertexAttribArray(mTexturePosHandler);
+        //解绑纹理
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
+        //删除纹理
         GLES20.glDeleteTextures(1, new int[mTextureId], 0);
+        //删除程序
         GLES20.glDeleteProgram(mProgram);
     }
 
@@ -128,15 +134,24 @@ public class BitmapDrawer implements IDrawer {
             //连接到着色器程序
             GLES20.glLinkProgram(mProgram);
 
+            /**
+             * 一下三个都是用于获取着色器程序内，成员变量的ID，也可以理解为句柄或指针
+             * 当我们需要改变如：颜色、位置、矩阵变换，都需要先获取这个变量的ID，然后对这个变量进行操作，就可以改变我们的绘制内容
+             */
+            //顶点位置变量ID
             mVertexPosHandler = GLES20.glGetAttribLocation(mProgram, "aPosition");
+            //颜色变量ID
             mTexturePosHandler = GLES20.glGetAttribLocation(mProgram, "aCoordinate");
+            //纹理ID
             mTextureHandler = GLES20.glGetUniformLocation(mProgram, "uTexture");
+
         }
         //使用OpenGL程序
         GLES20.glUseProgram(mProgram);
     }
-
+//    TEXTURE_EXTERNAL_OES，主要用于摄像头数据的采集
     private void activateTexture() {
+        //默认会生成第0号纹理，所以此处激活的是第0个纹理单元
         //激活指定纹理单元
         GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
         //绑定纹理ID到纹理单元
@@ -158,17 +173,37 @@ public class BitmapDrawer implements IDrawer {
     }
 
     private void doDraw() {
-        //启用顶点的句柄
+        //启用顶点变量ID，只有这里启用了我们才可以操作顶点或者纹理句柄
         GLES20.glEnableVertexAttribArray(mVertexPosHandler);
+        //启用纹理变量ID
         GLES20.glEnableVertexAttribArray(mTexturePosHandler);
-        //设置着色器参数， 第二个参数表示一个顶点包含的数据数量，这里为xy，所以为2
+        /**
+         * 传入顶点/纹理的位置
+         * glVertexAttribPointer
+         * (
+         * 1.顶点对应的句柄ID，
+         * 2.每个顶点属性的数组数量，（x,y）传2，（x,y,z）传3，（x,y,z,w）传4，
+         * 3.指定数组中每个数组的数据类型
+         * 4.固定点数据值是否归一化（GL_TRUE）或者直接转换为固定值（GL_FALSE）
+         * 5.指定连续顶点属性之间的偏移量。如果为0，则顶点属性会被理解为：他们是被紧密排列再一起的，反之，这些指会被直接转换为浮点值而不是归一化处理
+         * 6.顶点的缓冲数据
+         * )
+         */
         GLES20.glVertexAttribPointer(mVertexPosHandler, 2, GLES20.GL_FLOAT, false, 0, mVertexBuffer);
         GLES20.glVertexAttribPointer(mTexturePosHandler, 2, GLES20.GL_FLOAT, false, 0, mTextureBuffer);
         //开始绘制
         GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, 4);
     }
 
-
+    /**
+     * gl_Position:设置顶点转换到屏幕坐标的位置
+     * gl_pointSize:在粒子效果场景下，需要为粒子设置大小，改变内置变量的值就是为了设置每一个粒子矩形的大小
+     * gl_FragColor:指定当前纹理坐标锁代表的像素点的最终颜色值
+     *
+     *
+     *
+     * @return
+     */
     private String getVertexShader() {
         return "attribute vec4 aPosition;" +
                 "attribute vec2 aCoordinate;" +
