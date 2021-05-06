@@ -1,3 +1,5 @@
+include ':setlibrary'
+include ':selibrary'
 include ':cameralib'
 include ':app'
 include ':cameralib'

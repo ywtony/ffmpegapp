@@ -3,6 +3,8 @@ package camera;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
@@ -42,7 +44,7 @@ import com.yw.ffmpeg.utils.LogUtil;
  * @UpdateRemark: 更新说明：
  * @Version: 1.0
  */
-public class SurfaceCameraMp4Activity extends BaseActivity implements CameraProgressButton.Listener,  CameraSensor.CameraSensorListener, Camera.PreviewCallback {
+public class SurfaceCameraMp4Activity extends BaseActivity implements CameraProgressButton.Listener, CameraSensor.CameraSensorListener, Camera.PreviewCallback {
     private final static String TAG = SurfaceCameraMp4Activity.class.getSimpleName();
     private final static int CAMERA_REQUEST_CODE = 1;
     private final static int STORE_REQUEST_CODE = 2;
@@ -89,7 +91,7 @@ public class SurfaceCameraMp4Activity extends BaseActivity implements CameraProg
         mCameraView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(@NonNull SurfaceHolder holder) {
-                LogUtil.log("宽高参数："+holder.getSurfaceFrame().width()+"|"+holder.getSurfaceFrame().height());
+                LogUtil.log("宽高参数：" + holder.getSurfaceFrame().width() + "|" + holder.getSurfaceFrame().height());
                 mPreviewSize = new Size(holder.getSurfaceFrame().width(), holder.getSurfaceFrame().height());
                 startPreview();
             }
@@ -167,7 +169,7 @@ public class SurfaceCameraMp4Activity extends BaseActivity implements CameraProg
     @Override
     public void onResume() {
         super.onResume();
-        startPreview();
+//        startPreview();
     }
 
     @Override
@@ -251,7 +253,9 @@ public class SurfaceCameraMp4Activity extends BaseActivity implements CameraProg
         if (isTakePhoto) {
             String dirPath = StorageUtil.getImagePath();
             StorageUtil.checkDirExist(dirPath);
-            boolean result = ImageUtil.saveNV21(bytes, mPreviewSize.getWidth(), mPreviewSize.getHeight(), dirPath + "image.jpg");
+            LogUtil.log("图片宽高：" + mPreviewSize.getWidth() + "|" + mPreviewSize.getHeight());
+//            boolean result = ImageUtil.saveNV21(bytes, mPreviewSize.getWidth(), mPreviewSize.getHeight(), dirPath + "image.jpg");
+            boolean result = ImageUtil.saveImage(bytes, dirPath + "" + System.nanoTime() + ".jpg");
             isTakePhoto = false;
             if (result) {
                 Intent intent = new Intent(this, ImageActivity.class);

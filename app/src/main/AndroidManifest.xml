@@ -11,6 +11,8 @@
     <!--    摄像头硬件相关及自动对焦-->
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
+    <!--    用any可以是前置或者后置摄像头-->
+    <uses-feature android:name="android.hardware.camera.any" />
 
     <uses-permission
         android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
@@ -23,8 +25,8 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -66,10 +68,15 @@
         <activity
             android:name="camera.TextureViewCamera2PreviewActivity"
             android:label="TextureView摄像头预览" />
-        <activity android:name="camera.SurfaceCameraMp4Activity"
-            android:label="Camera相机拍照并预览编码保存"/>
-        <activity android:name="camera.ImageActivity"
-            android:label="预览拍照后的图片"/>
+        <activity
+            android:name="camera.SurfaceCameraMp4Activity"
+            android:label="Camera相机拍照并预览编码保存" />
+        <activity
+            android:name="camera.ImageActivity"
+            android:label="预览拍照后的图片" />
+        <activity
+            android:name="camera.CameraXActivity"
+            android:label="CameraX预览、拍照、录制" />
     </application>
 
 </manifest>

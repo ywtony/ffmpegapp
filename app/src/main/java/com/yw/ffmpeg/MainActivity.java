@@ -14,6 +14,7 @@ import com.yw.ffmpeg.utils.ActivityUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import camera.CameraXActivity;
 import camera.SurfaceCameraMp4Activity;
 import camera.SurfaceViewCamera2PreviewActivity;
 import camera.TextureViewCamera2PreviewActivity;
@@ -44,6 +45,7 @@ public class MainActivity extends FragmentActivity {
         list.add(new ClassBean("SurfaceView摄像头预览", SurfaceViewCamera2PreviewActivity.class.getName()));
         list.add(new ClassBean("TextureView摄像头预览", TextureViewCamera2PreviewActivity.class.getName()));
         list.add(new ClassBean("Camera相机拍照并预览编码保存", SurfaceCameraMp4Activity.class.getName()));
+        list.add(new ClassBean("CameraX使用", CameraXActivity.class.getName()));
 
         MainAdapter adapter = new MainAdapter(this, list, R.layout.item_main, new BaseListAdapter.OnListItemClickListener<ClassBean>() {
 

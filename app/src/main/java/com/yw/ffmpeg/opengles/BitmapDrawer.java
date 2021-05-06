@@ -158,9 +158,10 @@ public class BitmapDrawer implements IDrawer {
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTextureId);
         //将激活的纹理单元传递到着色器里面
         GLES20.glUniform1i(mTextureHandler, 0);
-        //配置边缘过渡参数
+        //设置纹理过滤方式为线性过滤，使用双线性插值平滑像素之间的过渡
         GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, (float) GLES20.GL_LINEAR);
         GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER,  (float) GLES20.GL_LINEAR);
+        //设置纹理坐标系的s轴和t轴的纹理映射过程中用到的重复映射或简约映射的规则。因为纹理坐标都是0~1范围，而按照下面规则设置，所有大于1的都为1，所有小于0的都为0
         GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE);
         GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE);
     }

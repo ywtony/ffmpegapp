@@ -11,6 +11,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * 图片工具
@@ -131,5 +132,25 @@ public class ImageUtil {
             }
         }
         return rotateYUV420Degree180(yuv, imageWidth, imageHeight);
+    }
+
+    /**
+     * 保存图图片
+     * @param bytes
+     * @param path
+     */
+    public static boolean saveImage(byte[] bytes, String path) {
+        try {
+            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            OutputStream out = new FileOutputStream(path);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            out.flush();
+            out.close();
+            bitmap.recycle();//释放内存
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }
